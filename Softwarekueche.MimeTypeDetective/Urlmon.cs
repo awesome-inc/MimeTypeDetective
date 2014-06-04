@@ -45,7 +45,7 @@ namespace Softwarekueche.MimeTypeDetective
             catch (Exception ex)
             {
                 Trace.WriteLine(string.Format("cannot find mime type for file '{0}' because '{1}'", fileinfo.FullName, ex.Message));
-                return "unknown/unknown";
+                return FileInfoExtension.UnresolvedMimeType;
             }
         }
     }
