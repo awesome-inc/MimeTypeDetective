@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Softwarekueche.MimeTypeDetective</id>
+    <version>0.1.0</version>
+    <authors>Thomas Mentzel</authors>
+    <owners>Thomas Mentzel</owners>
+    <licenseUrl>https://github.com/ThomasMentzel/MimeTypeDetective/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/ThomasMentzel/MimeTypeDetective</projectUrl>
+    <iconUrl>https://github.com/ThomasMentzel/MimeTypeDetective/Softwarekueche.MimeTypeDetective/icon.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>This file info extension tries to determine the mime type if a file.</description>
+    <releaseNotes>Initial version with basic lookup using a file extension lookup and if this fails the Urlmon P/Invoke.</releaseNotes>
+    <copyright>Copyright 2014</copyright>
+    <tags>Mime MimeType Files</tags>
+  </metadata>
+</package>
