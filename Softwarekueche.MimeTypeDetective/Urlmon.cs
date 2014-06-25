@@ -39,7 +39,7 @@ namespace Softwarekueche.MimeTypeDetective
                 FindMimeFromData(0, null, buffer, 256, null, 0, out mimetype, 0);
 
                 var mimeTypePtr = new IntPtr(mimetype);
-                string mime = Marshal.PtrToStringUni(mimeTypePtr);
+                var mime = Marshal.PtrToStringUni(mimeTypePtr);
                 Marshal.FreeCoTaskMem(mimeTypePtr);
                 return mime;
             }
