@@ -1,31 +1,28 @@
-﻿using System.IO;
-using FluentAssertions;
+﻿using FluentAssertions;
 using NUnit.Framework;
 
 namespace Softwarekueche.MimeTypeDetective.Tests
 {
-    [TestFixture()]
+    [TestFixture]
     public class UrlmonTests
     {
-        [Test()]
+        [Test]
         [TestCase(@"data\Textdokument.txt", "text/plain")]
         [TestCase(@"data\Notify.wav", "audio/wav")]
         public void TryFilesWhichWorkWithUrlmon(string filename, string mimetype)
         {
-            var fi = new FileInfo(filename);
-
-            var urlmonMtUrlmon = new Urlmon().GetMimeTypeFor(fi);
+            var uri = filename.ToUri();
+            var urlmonMtUrlmon = new Urlmon().GetMimeTypeFor(uri);
             urlmonMtUrlmon.Should().Be(mimetype);
         }
 
-        [Test()]
+        [Test]
         [TestCase(@"data\Overture.mp3", "audio/mpeg3")]
         [TestCase(@"data\Unknowndokument.thisisnotanextension", "")]
         public void TryFilesWhichWontWorkWithUrlmon(string filename, string mimetype)
         {
-            var fi = new FileInfo(filename);
-
-            var urlmonMtUrlmon = new Urlmon().GetMimeTypeFor(fi);
+            var uri = filename.ToUri();
+            var urlmonMtUrlmon = new Urlmon().GetMimeTypeFor(uri);
             urlmonMtUrlmon.Should().NotBe(mimetype);
             urlmonMtUrlmon.Should().Be("application/octet-stream");
         }

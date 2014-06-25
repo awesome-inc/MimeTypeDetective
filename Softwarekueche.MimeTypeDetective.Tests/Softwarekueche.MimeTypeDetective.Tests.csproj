@@ -46,6 +46,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FileExtensionTests.cs" />
+    <Compile Include="MimeTypeByResponseHeaderTests.cs" />
+    <Compile Include="TestFactory.cs" />
     <Compile Include="UrlmonTests.cs" />
     <Compile Include="MimeTypeByExtensionTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

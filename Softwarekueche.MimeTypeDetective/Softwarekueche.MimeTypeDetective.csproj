@@ -34,7 +34,8 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FileInfoExtension.cs" />
+    <Compile Include="MimeTypeByResponseHeader.cs" />
+    <Compile Include="UriExtensions.cs" />
     <Compile Include="IMimeTypeResolver.cs" />
     <Compile Include="MimeTypeByExtension.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

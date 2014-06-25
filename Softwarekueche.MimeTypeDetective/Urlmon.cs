@@ -19,12 +19,13 @@ namespace Softwarekueche.MimeTypeDetective
             UInt32 dwReserverd
         );
 
-        public string GetMimeTypeFor(FileInfo fileinfo)
+        public string GetMimeTypeFor(Uri uri)
         {
-            if (!fileinfo.Exists) throw new FileNotFoundException(fileinfo.FullName + " not found");
+            var fileInfo = new FileInfo(uri.LocalPath);
+            if (!fileInfo.Exists) throw new FileNotFoundException(fileInfo.FullName + " not found");
 
             var buffer = new byte[256];
-            using (var fs = new FileStream(fileinfo.FullName, FileMode.Open))
+            using (var fs = new FileStream(fileInfo.FullName, FileMode.Open))
             {
                 if (fs.Length >= 256)
                     fs.Read(buffer, 0, 256);
@@ -44,8 +45,8 @@ namespace Softwarekueche.MimeTypeDetective
             }
             catch (Exception ex)
             {
-                Trace.WriteLine(string.Format("cannot find mime type for file '{0}' because '{1}'", fileinfo.FullName, ex.Message));
-                return FileInfoExtension.UnresolvedMimeType;
+                Trace.WriteLine(string.Format("cannot find mime type for file '{0}' because '{1}'", fileInfo.FullName, ex.Message));
+                return UriExtensions.UnresolvedMimeType;
             }
         }
     }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -197,16 +198,17 @@ namespace Softwarekueche.MimeTypeDetective
             {"zip", "application/zip"}
         };
 
-        public string GetMimeTypeFor(FileInfo fileinfo)
+        public string GetMimeTypeFor(Uri uri)
         {
-            var extension = fileinfo.Extension.ToLower();
+            var fileInfo = new FileInfo(uri.LocalPath);
+            var extension = fileInfo.Extension.ToLower();
 
             if (extension.Length > 0 &&
                 MimeTypesDictionary.ContainsKey(extension.Remove(0, 1)))
             {
                 return MimeTypesDictionary[extension.Remove(0, 1)];
             }
-            return FileInfoExtension.UnresolvedMimeType;
+            return UriExtensions.UnresolvedMimeType;
         }
     }
 }

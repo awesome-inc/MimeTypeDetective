@@ -1,9 +1,9 @@
-﻿using System.IO;
+﻿using System;
 
 namespace Softwarekueche.MimeTypeDetective
 {
     public interface IMimeTypeResolver
     {
-        string GetMimeTypeFor(FileInfo fileinfo);
+        string GetMimeTypeFor(Uri uri);
     }
 }
