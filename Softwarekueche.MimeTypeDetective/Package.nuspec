@@ -3,12 +3,12 @@
   <metadata>
     <id>Softwarekueche.MimeTypeDetective</id>
     <title>MimeTypeDetective</title>
-    <version>$version$</version>
-    <authors>Thomas Mentzel</authors>
+    <version>0.2.0.0</version>
+    <authors>Thomas Mentzel, Marcel Körtgen</authors>
     <owners>Thomas Mentzel</owners>
     <licenseUrl>https://raw.githubusercontent.com/ThomasMentzel/MimeTypeDetective/master/LICENSE</licenseUrl>
-    <projectUrl>https://github.com/ThomasMentzel/MimeTypeDetective</projectUrl>
     <iconUrl>https://raw.githubusercontent.com/ThomasMentzel/MimeTypeDetective/master/Softwarekueche.MimeTypeDetective/icon.png</iconUrl>
+    <projectUrl>https://github.com/ThomasMentzel/MimeTypeDetective</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>This file info extension tries to determine the mime type if a file.</description>
     <releaseNotes>Initial version with basic lookup using a file extension lookup and if this fails the Urlmon P/Invoke.</releaseNotes>
