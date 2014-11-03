@@ -34,6 +34,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IFileExtensionGuesser.cs" />
     <Compile Include="MimeTypeByResponseHeader.cs" />
     <Compile Include="UriExtensions.cs" />
     <Compile Include="IMimeTypeResolver.cs" />

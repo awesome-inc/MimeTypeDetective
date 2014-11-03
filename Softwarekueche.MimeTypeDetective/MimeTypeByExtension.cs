@@ -1,12 +1,97 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace Softwarekueche.MimeTypeDetective
 {
-    public class MimeTypeByExtension:IMimeTypeResolver
+    public class MimeTypeByExtension : IMimeTypeResolver, IFileExtensionGuesser
     {
-        private static readonly Dictionary<string, string> MimeTypesDictionary = new Dictionary<string, string>
+        private static readonly Dictionary<string, string> MimeMappings = new Dictionary<string, string>();
+        private static readonly Dictionary<string,string> InverseMappings = new Dictionary<string, string>();
+
+        static MimeTypeByExtension()
+        {
+            UseMimeMapping(DefaultMapping);
+        }
+
+        public string GetMimeTypeFor(Uri uri)
+        {
+            var fileInfo = new FileInfo(uri.LocalPath);
+            var extension = fileInfo.Extension.ToLower();
+
+            if (extension.Length > 0 &&
+                MimeMappings.ContainsKey(extension.Remove(0, 1)))
+            {
+                return MimeMappings[extension.Remove(0, 1)];
+            }
+            return UriExtensions.UnresolvedMimeType;
+        }
+
+        public string GuessDefaultExtensionFor(string mimeType)
+        {
+            return GuessExtension(mimeType);
+        }
+
+        public IEnumerable<string> GetExtensionsFor(string mimeType)
+        {
+            return GetExtensions(mimeType);
+        }
+
+        public static bool IsRegistered(string ext)
+        {
+            return MimeMappings.ContainsKey(ext);
+        }
+
+        public static void Register(string ext, string mimeType)
+        {
+            MimeMappings.Add(ext, mimeType);
+            RegisterInverse(mimeType, ext);
+        }
+
+        public static void UseMimeMapping(IEnumerable<KeyValuePair<string, string>> mimeMappings)
+        {
+            MimeMappings.Clear();
+            foreach (var mapping in mimeMappings)
+                MimeMappings.Add(mapping.Key, mapping.Value);
+            UpdateInverseMapping();
+        }
+
+        public static void UseDefaulMapping()
+        {
+            UseMimeMapping(DefaultMapping);
+        }
+
+        private static IEnumerable<string> GetExtensions(string mimeType)
+        {
+            string extensions;
+            if (InverseMappings.TryGetValue(mimeType, out extensions))
+                return extensions.Split(',');
+            return Enumerable.Empty<string>();
+        }
+
+        private static string GuessExtension(string mimeType)
+        {
+            return GetExtensions(mimeType).FirstOrDefault() ?? String.Empty;
+        }
+
+        private static void UpdateInverseMapping()
+        {
+            InverseMappings.Clear();
+            foreach (var mapping in MimeMappings)
+                RegisterInverse(mapping.Value, mapping.Key);
+        }
+
+        private static void RegisterInverse(string mimeType, string ext)
+        {
+            string registeredExtensions;
+            if (InverseMappings.TryGetValue(mimeType, out registeredExtensions))
+                InverseMappings[mimeType] = String.Concat(registeredExtensions, ",", ext);
+            else
+                InverseMappings.Add(mimeType, ext);
+        }
+
+        private static readonly IDictionary<string, string> DefaultMapping = new Dictionary<string, string>
         {
             {"ai", "application/postscript"},
             {"aif", "audio/x-aiff"},
@@ -195,20 +280,18 @@ namespace Softwarekueche.MimeTypeDetective
             {"xul", "application/vnd.mozilla.xul+xml"},
             {"xwd", "image/x-xwindowdump"},
             {"xyz", "chemical/x-xyz"},
-            {"zip", "application/zip"}
+            {"zip", "application/zip"},
+            // v0.3.x:  mime type settings for windows media services, cf.: http://support.microsoft.com/kb/288102/en-us
+            {"asf", "video/x-ms-asf"},
+            {"asx",	"video/x-ms-asf"},
+            {"wma",	"audio/x-ms-wma"},
+            {"wax",	"audio/x-ms-wax"},
+            {"wmv",	"audio/x-ms-wmv"},
+            {"wvx",	"video/x-ms-wvx"},
+            {"wm",	"video/x-ms-wm"},
+            {"wmx",	"video/x-ms-wmx"},
+            {"wmz",	"application/x-ms-wmz"},
+            {"wmd",	"application/x-ms-wmd"}
         };
-
-        public string GetMimeTypeFor(Uri uri)
-        {
-            var fileInfo = new FileInfo(uri.LocalPath);
-            var extension = fileInfo.Extension.ToLower();
-
-            if (extension.Length > 0 &&
-                MimeTypesDictionary.ContainsKey(extension.Remove(0, 1)))
-            {
-                return MimeTypesDictionary[extension.Remove(0, 1)];
-            }
-            return UriExtensions.UnresolvedMimeType;
-        }
     }
 }
