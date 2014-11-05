@@ -9,18 +9,9 @@ namespace Softwarekueche.MimeTypeDetective
 
         public static string GetMimeType(this Uri uri)
         {
-            if (uri.IsFile)
-            {
-                // lets check the file extension
-                var mime = new MimeTypeByExtension().GetMimeTypeFor(uri);
-                if (mime != UnresolvedMimeType) 
-                    return mime;
-
-                // use system api as fallback
-                return new Urlmon().GetMimeTypeFor(uri);
-            }
-
-            return new MimeTypeByResponseHeader().GetMimeTypeFor(uri);
+            return uri.IsFile 
+                ? new MimeTypeByExtension().GetMimeTypeFor(uri)
+                : new MimeTypeByResponseHeader().GetMimeTypeFor(uri);
         }
 
         public static Uri ToUri(this FileInfo fileInfo)
